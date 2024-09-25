@@ -4,16 +4,12 @@ pnpm i
 cp .env.example .env
 sed -i "s|http://localhost:5050/|http://$(curl -s ifconfig.me)/recorder|g" .env
 sed -i "s|http://localhost:5555/|http://$(curl -s ifconfig.me)/transcriber|g" .env
-pnpm build
+pnpm start &
 cd ../
 cd backend
 pnpm i
 cp .env.example .env
-cd ../
-pm2 stop all
-pm2 serve frontend/build/ 3000 --name "frontend" --spa
-cd backend
-pm2  node  dist/index.js --name "server"
+pnpm start-dev &
 cd ../
 
 
