@@ -22,8 +22,8 @@ pm2 stop all
 cd frontend 
 cp .env.example .env
 pnpm i
-sed -i "s|http://localhost:5050/|https://$DOMAIN/recorder|g" .env
-sed -i "s|http://localhost:5555/|https://$DOMAIN/transcriber|g" .env
+sed -i "s|http://localhost:5050/|https://$DOMAIN/recorder/|g" .env
+sed -i "s|http://localhost:5555/|https://$DOMAIN/transcriber/|g" .env
 pnpm build
 pm2 serve build/ 3000 --name "frontend" --spa
 cd ../
