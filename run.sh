@@ -36,7 +36,7 @@ pnpm i
 sudo chmod -R 777 dist
 cp .env.example .env
 pnpm build
-pm2 node dist/index.js 
+pm2 start dist/main.js 
 cd ../
 
 # python server
