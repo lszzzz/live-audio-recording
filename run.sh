@@ -40,8 +40,10 @@ pm2 start dist/main.js
 cd ../
 
 # python server
+sudo apt install ffmpeg -y
 cd audio-transcription
+python3 -m venv myenv
+source myenv/bin/activate
 pip install -r requirements.txt
-pm2 python app/server.py 
+python app/server.py &
 
-cd ../
