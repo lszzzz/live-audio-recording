@@ -8,29 +8,59 @@ if [ -z "$1" ]; then
 fi
 
 DOMAIN=$1
-WWW_DOMAIN="www.$DOMAIN"
 
 # Install Certbot and Nginx plugin
 apt update
 apt install certbot python3-certbot-nginx -y
 
-# Obtain SSL certificate using Certbot for the domain
-certbot --nginx -d $DOMAIN -d $WWW_DOMAIN
-
 # Remove the default Nginx configuration
-rm /etc/nginx/sites-available/default
+rm /etc/nginx/sites-available/default 2>/dev/null
+rm /etc/nginx/sites-enabled/default 2>/dev/null
 
-# Create a new Nginx configuration file for the domain
-cat > /etc/nginx/sites-available/$DOMAIN <<EOL
+# Create a new Nginx configuration file for the domain (port 80 HTTP)
+cat > /etc/nginx/sites-available/default <<EOL
 server {
     listen 80;
-    server_name $DOMAIN $WWW_DOMAIN;
+    listen [::]:80;
+
+    server_name _;
+
+    location / {
+                # First attempt to serve request as file, then
+                # as directory, then fall back to displaying a 404.
+                try_files $uri $uri/ =404;
+        }
+
+}
+EOL
+
+# Enable the new configuration by creating a symbolic link
+ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
+
+# Test Nginx configuration
+nginx -t
+
+# Restart Nginx to apply the changes
+systemctl restart nginx
+
+# Obtain SSL certificate using Certbot
+certbot --nginx -d $DOMAIN 
+
+# After Certbot is successful, overwrite the Nginx configuration to force HTTPS
+cat > /etc/nginx/sites-available/default <<EOL
+server {
+    listen 80;
+    listen [::]:80;
+    server_name $DOMAIN;
+
+    # Redirect all HTTP requests to HTTPS
     return 301 https://\$host\$request_uri;
 }
 
 server {
     listen 443 ssl;
-    server_name $DOMAIN $WWW_DOMAIN;
+    listen [::]:443 ssl;
+    server_name $DOMAIN;
 
     ssl_certificate /etc/letsencrypt/live/$DOMAIN/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/$DOMAIN/privkey.pem;
@@ -57,7 +87,7 @@ server {
         rewrite ^/transcriber(.*)\$ \$1 break;
     }
 
-    # Reverse proxy for everything else (general traffic)
+    # Reverse proxy for everything else
     location / {
         proxy_pass http://localhost:3000/;
         proxy_set_header Host \$host;
@@ -68,22 +98,15 @@ server {
 }
 EOL
 
-# Enable the new configuration by creating a symbolic link
-ln -s /etc/nginx/sites-available/$DOMAIN /etc/nginx/sites-enabled/
-
-# Test Nginx configuration for syntax errors
+# Test Nginx configuration again after SSL setup
 nginx -t
 
-# Restart Nginx to apply the changes
+# Restart Nginx to apply the updated SSL configuration
 systemctl restart nginx
 
+# Install global npm packages
+npm install -g pnpm pm2 npx
 
-
-npm install -g pnpm
-npm install -g pm2
-npm install -g npx
+# Set up Python virtual environment
 python3 -m venv myenv
 source myenv/bin/activate
-
-
-
