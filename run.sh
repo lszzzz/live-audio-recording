@@ -14,5 +14,9 @@ pnpm i
 cp .env.example .env
 pnpm start-dev &
 cd ../
+cd audio-transcription
+pip install -r requirements.txt
+python app/server.py &
+cd ../
 
 

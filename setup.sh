@@ -3,6 +3,8 @@
 npm install -g pnpm
 npm install -g pm2
 npm install -g npx
+python3 -m venv myenv
+source myenv/bin/activate
 
 
 
