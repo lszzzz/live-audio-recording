@@ -34,7 +34,7 @@ function App() {
       return;
     }
     axios.post(process.env.REACT_APP_AUDIO_TRANSCRIBER_URL+'transcribe-audio',{file:audioURL}).then(data=>{
-      const response = data.data.transcription;
+      const response = data.data;
       if(response){
         setTrancription(response);
       }
@@ -80,17 +80,7 @@ function App() {
         )}
       </div>
 
-      {audioURL && (
-        <div className="my-12 flex justify-center">
-          <audio
-            controls
-            className="border border-white/50 p-4 rounded-lg bg-white text-black shadow-lg"
-            ref={audioRef}
-          >
-            Your browser does not support the audio element.
-          </audio>
-        </div>
-      )}
+    
 
       {audioURL ? (
         <div className="flex flex-col items-center space-y-4 mt-8">

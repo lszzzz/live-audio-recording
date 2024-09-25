@@ -9,11 +9,11 @@ CORS(app)
 def hello():
     return '<h1>Hello World</h1>'
 
-@app.route('/transcribe-audio',methods=['POST'])
+@app.route('/transcribe-audio', methods=['POST'])
 def get_transcriptions():
     try:
         data = request.get_json(force=True)
-        file_path = data['file_path']
+        file_path = data['file']
         transcriptions = transcribe_audio.transcribe(file_path)
         if 'text' in transcriptions:
             return transcriptions['text'], 200

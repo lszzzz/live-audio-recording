@@ -9,7 +9,7 @@ async function bootstrap() {
   await redisIoAdapter.connectToRedis();
   app.enableCors();
   app.useWebSocketAdapter(redisIoAdapter);
-  const port = process.env.PORT_NUMBER || 5000;
+  const port = process.env.PORT_NUMBER || 5050;
   app.useStaticAssets(join(__dirname, '..', 'public'));
   await app
     .listen(port)
