@@ -1,4 +1,5 @@
 #!/bin/bash
+mkdir backend/public/upload
 cd frontend 
 pnpm i
 cp .env.example .env
