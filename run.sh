@@ -8,11 +8,10 @@ pnpm build
 cd ../
 cd backend
 pnpm i
-pnpm build
 cp .env.example .env
 cd ../
 pm2 stop all
-pm2 serve apps/frontend/build/ 3000 --name "frontend" --spa
+pm2 serve frontend/build/ 3000 --name "frontend" --spa
 cd backend
 pm2  node  dist/index.js --name "server"
 cd ../
