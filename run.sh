@@ -1,5 +1,7 @@
 #!/bin/bash
-mkdir backend/public/upload
+sudo chmod -R 777 backend/dist
+mkdir backend/public
+mkdir backend/public/audios
 cd frontend 
 pnpm i
 cp .env.example .env

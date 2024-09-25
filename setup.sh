@@ -9,7 +9,7 @@ npm install -g npx
 if ! grep -q "location /backend/" /etc/nginx/sites-available/default; then
     sudo sed -i '/server_name _;/a \
         location /recorder/ { \
-            proxy_pass http://localhost:5000/; \
+            proxy_pass http://localhost:5050/; \
             proxy_set_header Host $host; \
             proxy_set_header X-Real-IP $remote_addr; \
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; \
