@@ -119,6 +119,7 @@ echo "Installing global npm packages..."
 npm install -g pnpm pm2 npx
 apt instal python3-venv
 
+
 # Set up Python virtual environment
 echo "Setting up Python virtual environment..."
 python3 -m venv myenv
