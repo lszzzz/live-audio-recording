@@ -124,5 +124,7 @@ apt instal python3-venv
 echo "Setting up Python virtual environment..."
 python3 -m venv myenv
 source myenv/bin/activate
+pip install -r requirements.txt
+
 
 echo "Setup complete!"

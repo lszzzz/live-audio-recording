@@ -7,6 +7,9 @@ pm2 start dist/main.js
 cd ..
 sudo chmod -R 777 backend/public
 sudo chmod -R 777 audio-transcription
+
+
+
 cd audio-transcription
 python3 -m venv myenv
 source myenv/bin/activate
